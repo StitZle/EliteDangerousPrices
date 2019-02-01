@@ -4,18 +4,14 @@ import static eliteDangerousPrice.utils.Constants.*;
 
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import eliteDangerousPrice.functions.Delete;
 import eliteDangerousPrice.functions.Download;
 import eliteDangerousPrice.functions.SystemLogger;
-import eliteDangerousPrice.csvHandler.csvReaderInsert;
-import eliteDangerousPrice.handler.DatabaseHandler;
-import eliteDangerousPrice.jsonHandler.NearbySystems;
-import eliteDangerousPrice.jsonHandler.JSONReader;
+import eliteDangerousPrice.handler.commodityPricesHandler.csvReaderInsert;
+import eliteDangerousPrice.functions.DatabaseHandler;
+import eliteDangerousPrice.rest.NearbySystems;
+import eliteDangerousPrice.handler.systemsHandler.SystemsReader;
 
 
 public class Main
@@ -53,7 +49,7 @@ public class Main
 		DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
 		databaseHandler.generateNewDatabase();
 		databaseHandler.generateTables();
-		JSONReader jsonReader = new JSONReader();
+		SystemsReader jsonReader = new SystemsReader();
 		NearbySystems getNearbySystems = new NearbySystems();
 
 		final long timeStart = System.currentTimeMillis();
@@ -77,34 +73,20 @@ public class Main
 		//databaseHandler.dropTable( DB_TABLE_NEARBY_SYSTEMS );
 		//jsonReader.readJson();
 		//delete.delete( SAVE_PATH_SYSTEMS );
-		//getNearbySystems.getDta();
 
-		try
-		{
-			Connection connection = databaseHandler.connect();
-			PreparedStatement preparedStatement = connection.prepareStatement(
-					"SELECT fromSystem, toSystem, distance FROM " + DB_TABLE_NEARBY_SYSTEMS
-							+ " WHERE fromSystem= 6745" );
-			ResultSet resultSet = preparedStatement.executeQuery();
+		//************************************************************//
+		//						Commodity Mapping					  //
+		//************************************************************//
 
-			while( resultSet.next() )
-			{
-				int id = resultSet.getInt( "fromSystem" );
-				int id2 = resultSet.getInt( "toSystem" );
-				double dis = resultSet.getDouble( "distance" );
-				//System.out.println(id +", " + id2 + ", " + dis);
-			}
-		}
-		catch( SQLException e )
-		{
-			e.printStackTrace();
-		}
+		downloadler.download( DOWNLOAD_URL_COMMODITY_MAPPING, SAVE_PATH_COMMODITY_MAPPING );
+
 
 		final long timeEnd = System.currentTimeMillis();
-		long time = ( timeEnd - timeStart ) / 1000;
-		systemLogger.info( "Hole action tooked:  " + time + " seconds." );
+		long time = ( timeEnd - timeStart );
 		System.out.println( time );
+		systemLogger.info( "Hole action tooked:  " + time + " seconds." );
 
+		//getNearbySystems.getDta("Sol", 100);
 	}
 }
 

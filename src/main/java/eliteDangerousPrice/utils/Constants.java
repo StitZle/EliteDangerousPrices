@@ -23,8 +23,6 @@ public class Constants
 
 	public static final String DB_TABLE_SYSTEMS = "systems";
 
-	public static final String DB_TABLE_NEARBY_SYSTEMS = "nearbySystems";
-
 	public static final String SAVE_PATH_SYSTEMS = "C:/Users/nibu/Desktop/Me/Projects/EliteDangerous/EliteDangerousPrices/src/main/resources/downloads/systems.jsonl";
 
 	public static final String SQL_SYSTEMS_INSERT = "INSERT INTO " + DB_TABLE_SYSTEMS
@@ -33,10 +31,15 @@ public class Constants
 	public static final String SQL_SYSTEMS_SELECT_FIRST =
 			"SELECT id, edsm_id, system_name, x_pos, y_pos, z_pos, needs_permit, updated_at FROM " + DB_TABLE_SYSTEMS;
 
-	public static final String SQL_SYSTEMS_NEARBY_SYSTEMS_INSERT =
-			"INSERT INTO " + DB_TABLE_NEARBY_SYSTEMS + "(fromSystem, toSystem, distance) VALUES (?,?,?)";
-
 	public static final String DOWNLOAD_URL_SYSTEMS = "https://eddb.io/archive/v6/systems_populated.jsonl";
+
+	// Commodity Mapping //
+
+	public static final String DOWNLOAD_URL_COMMODITY_MAPPING = "https://eddb.io/archive/v6/commodities.json";
+
+	public static final String SAVE_PATH_COMMODITY_MAPPING = "C:/Users/nibu/Desktop/Me/Projects/EliteDangerous/EliteDangerousPrices/src/main/resources/downloads/commodities.json";
+
+	public static final String DB_TABLE_COMMODITY_MAPPING = "commodityMapping";
 
 }
 

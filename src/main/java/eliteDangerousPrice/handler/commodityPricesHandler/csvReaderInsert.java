@@ -1,4 +1,4 @@
-package eliteDangerousPrice.csvHandler;
+package eliteDangerousPrice.handler.commodityPricesHandler;
 
 import static eliteDangerousPrice.utils.Constants.*;
 
@@ -14,7 +14,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
 import eliteDangerousPrice.functions.SystemLogger;
-import eliteDangerousPrice.handler.DatabaseHandler;
+import eliteDangerousPrice.functions.DatabaseHandler;
 
 
 public class csvReaderInsert

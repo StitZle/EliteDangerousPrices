@@ -1,4 +1,4 @@
-package eliteDangerousPrice.jsonHandler;
+package eliteDangerousPrice.handler.systemsHandler;
 
 import static eliteDangerousPrice.utils.Constants.*;
 
@@ -17,10 +17,10 @@ import org.json.JSONObject;
 import com.google.gson.Gson;
 
 import eliteDangerousPrice.functions.SystemLogger;
-import eliteDangerousPrice.handler.DatabaseHandler;
+import eliteDangerousPrice.functions.DatabaseHandler;
 
 
-public class JSONReader
+public class SystemsReader
 {
 	SystemLogger systemLogger = SystemLogger.getInstance();
 
@@ -87,12 +87,12 @@ public class JSONReader
 					}
 					catch( SQLException e )
 					{
-						systemLogger.error( "SQLException in JSONReader: " + e.getMessage() );
+						systemLogger.error( "SQLException in SystemsReader: " + e.getMessage() );
 					}
 				}
 				catch( Exception e )
 				{
-					systemLogger.error( "Exception in JSONReader: " + e.getMessage() );
+					systemLogger.error( "Exception in SystemsReader: " + e.getMessage() );
 				}
 			}
 		}
@@ -102,7 +102,7 @@ public class JSONReader
 		}
 		catch( IOException e )
 		{
-			systemLogger.error( "Error in JSONReader, BufferedReader: " + e.getMessage() );
+			systemLogger.error( "Error in SystemsReader, BufferedReader: " + e.getMessage() );
 		}
 
 		try
@@ -117,7 +117,7 @@ public class JSONReader
 		}
 		catch( SQLException e )
 		{
-			systemLogger.error( "SQLException in JSONReader: " + e.getMessage() );
+			systemLogger.error( "SQLException in SystemsReader: " + e.getMessage() );
 		}
 
 		final long timeEnd = System.currentTimeMillis();

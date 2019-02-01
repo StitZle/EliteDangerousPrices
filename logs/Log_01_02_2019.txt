@@ -1,13 +1,15 @@
 -----------------------
 Log start
-Start time: 01/02/2019 08:52:40
+Start time: 01/02/2019 13:55:29
 ------------------------
 
-08:52:40 -INFO-    : Connection: org.sqlite.jdbc4.JDBC4Connection@77846d2c
-08:52:40 -INFO-    : The database driver name is: SQLite JDBC
-08:52:40 -INFO-    : Database driver version: 3.25.2
-08:52:40 -INFO-    : Database Path: jdbc:sqlite:./src/main/resources/database/ED_Database.db
-08:52:40 -INFO-    : Table name: stationCommoditys
-08:52:40 -INFO-    : Table name: systems
-08:52:40 -INFO-    : Table name: nearbySystems
-08:52:40 -INFO-    : Hole action tooked:  15 seconds.
+13:55:29 -INFO-    : Connection: org.sqlite.jdbc4.JDBC4Connection@df27fae
+13:55:29 -INFO-    : The database driver name is: SQLite JDBC
+13:55:29 -INFO-    : Database driver version: 3.25.2
+13:55:29 -INFO-    : Database Path: jdbc:sqlite:./src/main/resources/database/ED_Database.db
+13:55:29 -INFO-    : Table name: stationCommoditys
+13:55:29 -INFO-    : Table name: systems
+13:55:29 -INFO-    : Table name: commodityMapping
+13:55:29 -INFO-    : Starting download from: https://eddb.io/archive/v6/commodities.json
+13:55:29 -INFO-    : Download finished. Download last: 0 seconds.
+13:55:29 -INFO-    : Hole action tooked:  614 seconds.

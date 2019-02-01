@@ -1,4 +1,4 @@
-package eliteDangerousPrice.handler;
+package eliteDangerousPrice.functions;
 
 import static eliteDangerousPrice.utils.Constants.*;
 
@@ -7,8 +7,6 @@ import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import eliteDangerousPrice.functions.SystemLogger;
 
 
 public class DatabaseHandler
@@ -89,10 +87,9 @@ public class DatabaseHandler
 				+ "updated_at integer\n"
 				+ ");";
 
-		String tableNearbySystems = "CREATE TABLE IF NOT EXISTS " + DB_TABLE_NEARBY_SYSTEMS + " (\n"
-				+ "fromSystem integer, \n"
-				+ "toSystem integer,\n"
-				+ "distance real\n"
+		String tableCommodityMapping = "CREATE TABLE IF NOT EXISTS " + DB_TABLE_COMMODITY_MAPPING + " (\n"
+				+ "id integer PRIMARY KEY, \n"
+				+ "name text\n"
 				+ ");";
 
 		try (Connection conn = connect();
@@ -101,10 +98,10 @@ public class DatabaseHandler
 
 			stmt.execute( tablePrice );
 			stmt.execute( tableSystems );
-			stmt.execute( tableNearbySystems );
+			stmt.execute( tableCommodityMapping );
 			systemLogger.info( "Table name: " + DB_TABLE_STATION_COMMODITY );
 			systemLogger.info( "Table name: " + DB_TABLE_SYSTEMS );
-			systemLogger.info( "Table name: " + DB_TABLE_NEARBY_SYSTEMS );
+			systemLogger.info( "Table name: " + DB_TABLE_COMMODITY_MAPPING );
 
 		}
 		catch( SQLException e )

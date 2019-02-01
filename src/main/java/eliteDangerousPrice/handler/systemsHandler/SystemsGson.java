@@ -1,4 +1,4 @@
-package eliteDangerousPrice.jsonHandler;
+package eliteDangerousPrice.handler.systemsHandler;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

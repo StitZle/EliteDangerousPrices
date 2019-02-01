@@ -1,0 +1,13 @@
+-----------------------
+Log start
+Start time: 01/02/2019 08:52:40
+------------------------
+
+08:52:40 -INFO-    : Connection: org.sqlite.jdbc4.JDBC4Connection@77846d2c
+08:52:40 -INFO-    : The database driver name is: SQLite JDBC
+08:52:40 -INFO-    : Database driver version: 3.25.2
+08:52:40 -INFO-    : Database Path: jdbc:sqlite:./src/main/resources/database/ED_Database.db
+08:52:40 -INFO-    : Table name: stationCommoditys
+08:52:40 -INFO-    : Table name: systems
+08:52:40 -INFO-    : Table name: nearbySystems
+08:52:40 -INFO-    : Hole action tooked:  15 seconds.

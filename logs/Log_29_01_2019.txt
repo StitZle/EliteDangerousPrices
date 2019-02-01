@@ -1,0 +1,16 @@
+-----------------------
+Log start
+Start time: 29/01/2019 22:57:37
+------------------------
+
+22:57:37 -INFO-    : Connection: org.sqlite.jdbc4.JDBC4Connection@4c762604
+22:57:37 -INFO-    : The database driver name is: SQLite JDBC
+22:57:37 -INFO-    : Database driver version: 3.25.2
+22:57:37 -INFO-    : Database Path: jdbc:sqlite:./src/main/resources/database/ED_Database.db
+22:57:37 -INFO-    : Table name: stationCommoditys
+22:57:37 -INFO-    : Table name: systems
+22:57:37 -INFO-    : Commit the Batch!5000.0
+22:57:37 -INFO-    : Commit the Batch!10000.0
+22:57:37 -INFO-    : Inserted last Batch!
+22:57:37 -INFO-    : Inserted rows: 10273.0
+22:57:37 -INFO-    : Last 3 seconds to inserted all rows from json file to database.

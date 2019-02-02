@@ -11,12 +11,17 @@ public class Download
 {
 	SystemLogger systemLogger = SystemLogger.getInstance();
 
+	String className = this.getClass().getSimpleName();
+
+	TimeMeasurment time = new TimeMeasurment();
+
 
 	public void download( String downloadURL, String savePath )
 	{
 
-		systemLogger.info( "Starting download from: " + downloadURL );
-		final long timeStart = System.currentTimeMillis();
+		time.startTime();
+
+		systemLogger.info( className, "Starting download from: " + downloadURL );
 
 		try
 		{
@@ -35,16 +40,12 @@ public class Download
 		}
 		catch( MalformedURLException e )
 		{
-			systemLogger.error( "Error in URL: " + e.getMessage() );
+			systemLogger.error( className, "Error in URL: " + e.getMessage() );
 		}
 		catch( IOException e )
 		{
-			systemLogger.error( "Error in Downloader: " + e.getMessage() );
+			systemLogger.error( className, "Error while downloading: " + e.getMessage() );
 		}
-
-		final long timeEnd = System.currentTimeMillis();
-		long time = ( timeEnd - timeStart ) / 1000;
-		systemLogger.info( "Download finished. Download last: " + time + " seconds." );
-
+		time.measuretTime( className, "Download from " + downloadURL );
 	}
 }

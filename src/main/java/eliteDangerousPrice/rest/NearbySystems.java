@@ -1,6 +1,6 @@
 package eliteDangerousPrice.rest;
 
-import static eliteDangerousPrice.utils.Constants.*;
+import static eliteDangerousPrice.utils.Constants.DB_TABLE_SYSTEMS;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,18 +15,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import eliteDangerousPrice.functions.SystemLogger;
 import eliteDangerousPrice.functions.DatabaseHandler;
+import eliteDangerousPrice.functions.SystemLogger;
+import eliteDangerousPrice.functions.TimeMeasurment;
 
 
 public class NearbySystems
 {
 	SystemLogger systemLogger = SystemLogger.getInstance();
 
+	String className = this.getClass().getSimpleName();
+
 	DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
 
+	TimeMeasurment time = new TimeMeasurment();
 
-	public void getDta( String currentSystem, int radius )
+
+	public void getData( String currentSystem, int radius )
 	{
 		final long timeStart = System.currentTimeMillis();
 
@@ -37,6 +42,7 @@ public class NearbySystems
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"SELECT id, edsm_id, system_name, x_pos, y_pos, z_pos, needs_permit, updated_at FROM "
 							+ DB_TABLE_SYSTEMS + " WHERE system_name = ?" );
+
 			preparedStatement.setString( 1, currentSystem );
 			ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -59,7 +65,7 @@ public class NearbySystems
 
 					JSONObject jsonObject1 = new JSONObject();
 					JSONArray jsonArray = new JSONArray();
-/*
+
 					jsonObject1.put( "currentSystem_ID", id );
 					jsonObject1.put( "currentSystem_EDSM_ID" , edsm_id );
 					jsonObject1.put( "currentSystem_Name", system_name );
@@ -70,7 +76,7 @@ public class NearbySystems
 					jsonObject1.put( "currentSystem_Updated_at", updated_at  );
 					jsonObject1.put( "distance", 0.00 );
 					jsonArray.put( jsonObject1 );
-*/
+
 					PreparedStatement preparedStatement1 = connection.prepareStatement(
 							"SELECT id, edsm_id, system_name, x_pos, y_pos, z_pos, needs_permit, updated_at FROM "
 									+ DB_TABLE_SYSTEMS );
@@ -99,7 +105,7 @@ public class NearbySystems
 						}
 
 					}
-					systemLogger.info( jsonArray.toString() );
+
 					sortArray( jsonArray );
 
 				}
@@ -117,7 +123,8 @@ public class NearbySystems
 
 		final long timeEnd = System.currentTimeMillis();
 		long time = ( timeEnd - timeStart ) / 1000;
-		systemLogger.info( "Last " + time + " seconds." );
+
+		systemLogger.info( className, "Last " + time + " seconds." );
 
 	}
 
@@ -129,26 +136,21 @@ public class NearbySystems
 		for( int i = 0; i < jsonArray.length(); i++ )
 			sortedArray.add( jsonArray.getJSONObject( i ) );
 
-		Collections.sort( sortedArray, new Comparator<JSONObject>()
-		{
-			@Override
-			public int compare( JSONObject jsonObjectA, JSONObject jsonObjectB )
+		Collections.sort( sortedArray, ( jsonObjectA, jsonObjectB ) -> {
+			int compare = 0;
+			try
 			{
-				int compare = 0;
-				try
-				{
-					Double keyA = jsonObjectA.getDouble( "distance" );
-					Double keyB = jsonObjectB.getDouble( "distance" );
-					compare = Double.compare( keyA, keyB );
-				}
-				catch( JSONException e )
-				{
-					e.printStackTrace();
-				}
-				return compare;
+				Double keyA = jsonObjectA.getDouble( "distance" );
+				Double keyB = jsonObjectB.getDouble( "distance" );
+				compare = Double.compare( keyA, keyB );
 			}
+			catch( JSONException e )
+			{
+				e.printStackTrace();
+			}
+			return compare;
 		} );
-		systemLogger.info( sortedArray.toString() );
+		systemLogger.info( className, sortedArray.toString() );
 	}
 
 }

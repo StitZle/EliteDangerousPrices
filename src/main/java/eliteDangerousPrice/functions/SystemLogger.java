@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -43,26 +44,40 @@ public class SystemLogger
 	String filePath = "./logs/";
 
 
-	public void newFile() throws FileNotFoundException, java.io.UnsupportedEncodingException
+	public void newFile()
 	{
-
-		PrintWriter writer = new PrintWriter( filePath + fileName, "UTF-8" );
-		writer.println( "-----------------------" );
-		writer.println( "Log start" );
-		writer.println( "Start time: " + dtf.format( now ) );
-		writer.println( "------------------------\n" );
-		writer.close();
+		try
+		{
+			PrintWriter writer = new PrintWriter( filePath + fileName, "UTF-8" );
+			writer.println( "-----------------------" );
+			writer.println( "Log start" );
+			writer.println( "Start time: " + dtf.format( now ) );
+			writer.println( "------------------------\n" );
+			writer.close();
+		}
+		catch( FileNotFoundException e )
+		{
+			e.printStackTrace();
+		}
+		catch( UnsupportedEncodingException e )
+		{
+			e.printStackTrace();
+		}
 
 	}
 
 
-	public void error( String logMsg )
+	public void error( String className, String logMsg )
 	{
 		try (FileWriter f = new FileWriter( filePath + fileName, true );
 				BufferedWriter bw = new BufferedWriter( f );
 				PrintWriter writer = new PrintWriter( bw ))
 		{
-			writer.println( logtime.format( now ) + " -ERROR-  " + " : " + logMsg );
+			writer.println( logtime.format( now ) + " -ERROR-  " + className + String.format(
+					"%" + ( 22 - className.length() ) + "s", "" ) + ": " + logMsg );
+			writer.println( logtime.format( now ) + " -ERROR-  " + " Exiting program because an error occurred in "
+					+ className );
+			System.exit( 1 );
 		}
 		catch( IOException i )
 		{
@@ -71,13 +86,15 @@ public class SystemLogger
 	}
 
 
-	public void warning( String logMsg )
+	public void warning( String className, String logMsg )
 	{
 		try (FileWriter f = new FileWriter( filePath + fileName, true );
 				BufferedWriter bw = new BufferedWriter( f );
 				PrintWriter writer = new PrintWriter( bw ))
 		{
-			writer.println( logtime.format( now ) + " -WARNING-" + " : " + logMsg );
+			writer.println( logtime.format( now ) + " -WARNING-  " + className + String.format(
+					"%" + ( 22 - className.length() ) + "s", "" ) + ": " + logMsg );
+
 		}
 		catch( IOException i )
 		{
@@ -86,17 +103,18 @@ public class SystemLogger
 	}
 
 
-	public void info( String logMsg )
+	public void info( String className, String logMsg )
 	{
 		try (FileWriter f = new FileWriter( filePath + fileName, true );
 				BufferedWriter bw = new BufferedWriter( f );
 				PrintWriter writer = new PrintWriter( bw ))
 		{
-			writer.println( logtime.format( now ) + " -INFO-   " + " : " + logMsg );
+			writer.println( logtime.format( now ) + " -INFO-  " + className + String.format(
+					"%" + ( 22 - className.length() ) + "s", "" ) + ": " + logMsg );
 		}
-		catch( IOException i )
+		catch( IOException e )
 		{
-			i.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 }

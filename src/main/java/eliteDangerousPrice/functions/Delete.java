@@ -11,6 +11,8 @@ public class Delete
 {
 	SystemLogger systemLogger = SystemLogger.getInstance();
 
+	String className = this.getClass().getSimpleName();
+
 
 	public void delete( String deletePath )
 	{
@@ -20,18 +22,18 @@ public class Delete
 		}
 		catch( NoSuchFileException e )
 		{
-			systemLogger.error( "No such file/directory exists: " + deletePath );
+			systemLogger.warning( className, "No such file/directory exists: " + deletePath );
 		}
 		catch( DirectoryNotEmptyException e )
 		{
-			systemLogger.error( "Directory is not empty: " + deletePath );
+			systemLogger.warning( className, "Directory is not empty: " + deletePath );
 		}
 		catch( IOException e )
 		{
-			systemLogger.error( "Invalid permissions: " + deletePath );
+			systemLogger.warning( className, "Invalid permissions: " + deletePath );
 		}
 
-		systemLogger.info( "Successfully deleted csv file. Path: " + deletePath );
+		systemLogger.info( className, "Successfully deleted file. Path: " + deletePath );
 
 	}
 }

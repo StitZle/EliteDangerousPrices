@@ -2,22 +2,26 @@ package eliteDangerousPrice;
 
 import static eliteDangerousPrice.utils.Constants.*;
 
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
-
 import eliteDangerousPrice.functions.Delete;
 import eliteDangerousPrice.functions.Download;
 import eliteDangerousPrice.functions.SystemLogger;
-import eliteDangerousPrice.handler.commodityPricesHandler.csvReaderInsert;
+import eliteDangerousPrice.functions.TimeMeasurment;
+import eliteDangerousPrice.handler.commodityMappingHandler.CommodityMapping;
+import eliteDangerousPrice.handler.commodityPricesHandler.CommodityPrices;
 import eliteDangerousPrice.functions.DatabaseHandler;
+import eliteDangerousPrice.handler.stationHandler.Stations;
+import eliteDangerousPrice.handler.systemsHandler.Systems;
 import eliteDangerousPrice.rest.NearbySystems;
-import eliteDangerousPrice.handler.systemsHandler.SystemsReader;
 
 
 public class Main
 {
 
 	SystemLogger systemLogger = SystemLogger.getInstance();
+
+	String className = this.getClass().getSimpleName();
+
+	DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
 
 
 	public static void main( String[] args )
@@ -33,60 +37,74 @@ public class Main
 	public void init()
 	{
 
-		try
-		{
-			systemLogger.newFile();
-		}
-		catch( FileNotFoundException | UnsupportedEncodingException e )
-		{
-			systemLogger.error( "File format is not supported. Or Encoding is wrong. " + e.getMessage() );
-		}
+		TimeMeasurment time = new TimeMeasurment();
 
-		Download downloadler = new Download();
-		csvReaderInsert csvReaderInsert = new csvReaderInsert();
-		Delete delete = new Delete();
+		time.startTime();
 
-		DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
+		systemLogger.newFile();
+
 		databaseHandler.generateNewDatabase();
 		databaseHandler.generateTables();
-		SystemsReader jsonReader = new SystemsReader();
-		NearbySystems getNearbySystems = new NearbySystems();
 
-		final long timeStart = System.currentTimeMillis();
+		Download downloadler = new Download();
+
+		CommodityPrices commodityPrices = new CommodityPrices();
+
+		Delete delete = new Delete();
+
+		Systems jsystems = new Systems();
+
+		CommodityMapping commodityMapping = new CommodityMapping();
+
+		Stations insertStations = new Stations();
+
+
+
 
 		//************************************************************//
 		//						Commodity Prices					  //
 		//************************************************************//
-/*
+
 		downloadler.download( DOWNLOAD_URL_STATION_COMMODITY , SAVE_PATH_STATION_COMMODITY );
 		databaseHandler.dropTable(DB_TABLE_STATION_COMMODITY);
-		csvReaderInsert.read();
+		commodityPrices.insertCommodityPrices();
 		delete.delete(SAVE_PATH_STATION_COMMODITY);
-*/
+
 
 		//************************************************************//
-		//						      Systems 	   					  //
+		//					    Systems 	   					      //
 		//************************************************************//
 
-		//downloadler.download( DOWNLOAD_URL_SYSTEMS, SAVE_PATH_SYSTEMS );
-		//databaseHandler.dropTable( DB_TABLE_SYSTEMS );
-		//databaseHandler.dropTable( DB_TABLE_NEARBY_SYSTEMS );
-		//jsonReader.readJson();
-		//delete.delete( SAVE_PATH_SYSTEMS );
+		downloadler.download( DOWNLOAD_URL_SYSTEMS, SAVE_PATH_SYSTEMS );
+		databaseHandler.dropTable( DB_TABLE_SYSTEMS );
+		jsystems.insertSystems();
+		delete.delete( SAVE_PATH_SYSTEMS );
+
 
 		//************************************************************//
 		//						Commodity Mapping					  //
 		//************************************************************//
 
 		downloadler.download( DOWNLOAD_URL_COMMODITY_MAPPING, SAVE_PATH_COMMODITY_MAPPING );
+		databaseHandler.dropTable( DB_TABLE_COMMODITY_MAPPING );
+		commodityMapping.insertCommodityMapping();
+		delete.delete( SAVE_PATH_COMMODITY_MAPPING );
 
+		//************************************************************//
+		//						Stations					          //
+		//************************************************************//
 
-		final long timeEnd = System.currentTimeMillis();
-		long time = ( timeEnd - timeStart );
-		System.out.println( time );
-		systemLogger.info( "Hole action tooked:  " + time + " seconds." );
+		downloadler.download( DOWNLOAD_URL_STATIONS, SAVE_PATH_STATIONS );
+		databaseHandler.dropTable( DB_TABLE_STATIONS );
+		insertStations.insertStations();
+		delete.delete( SAVE_PATH_STATIONS );
 
-		//getNearbySystems.getDta("Sol", 100);
+		time.measuretTime( className, "Complete program" );
+
+		NearbySystems getNearbySystems = new NearbySystems();
+		//getNearbySystems.getData("Sol", 100);
+
+		System.exit( 0 );
 	}
 }
 

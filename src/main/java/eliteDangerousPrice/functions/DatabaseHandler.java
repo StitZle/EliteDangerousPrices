@@ -13,6 +13,8 @@ public class DatabaseHandler
 {
 	SystemLogger systemLogger = SystemLogger.getInstance();
 
+	String className = this.getClass().getSimpleName();
+
 	//Singelton Stuff
 	private static final DatabaseHandler instace = new DatabaseHandler();
 
@@ -37,7 +39,7 @@ public class DatabaseHandler
 		}
 		catch( SQLException e )
 		{
-			systemLogger.error( "SQLExecption:" + e );
+			systemLogger.error( className, "SQLExecption: " + e.getMessage() );
 		}
 		return connection;
 	}
@@ -47,18 +49,18 @@ public class DatabaseHandler
 	{
 		try (Connection conn = connect())
 		{
-			systemLogger.info( "Connection: " + conn );
+			systemLogger.info( className, "Connection is: " + conn );
 			if( conn != null )
 			{
 				DatabaseMetaData meta = conn.getMetaData();
-				systemLogger.info( "The database driver name is: " + meta.getDriverName() );
-				systemLogger.info( "Database driver version: " + meta.getDriverVersion() );
-				systemLogger.info( "Database Path: " + DB_URL + DB_NAME );
+				systemLogger.info( className, "The database driver name is: " + meta.getDriverName() );
+				systemLogger.info( className, "Database driver version: " + meta.getDriverVersion() );
+				systemLogger.info( className, "Database Path: " + DB_URL + DB_NAME );
 			}
 		}
 		catch( SQLException e )
 		{
-			systemLogger.error( "SQLExecption: " + e );
+			systemLogger.error( className, "SQLExecption: " + e );
 		}
 	}
 
@@ -92,6 +94,17 @@ public class DatabaseHandler
 				+ "name text\n"
 				+ ");";
 
+		String tableStations = "CREATE TABLE IF NOT EXISTS " + DB_TABLE_STATIONS + " (\n"
+				+ "id integer PRIMARY KEY, \n"
+				+ "name text,\n"
+				+ "updated_at integer,\n"
+				+ "max_landing_pad_size text,\n"
+				+ "distance_to_star real,\n"
+				+ "has_commodities integer,\n"
+				+ "market_updated_at integer,\n"
+				+ "is_planetary integer\n"
+				+ ");";
+
 		try (Connection conn = connect();
 				Statement stmt = conn.createStatement())
 		{
@@ -99,14 +112,16 @@ public class DatabaseHandler
 			stmt.execute( tablePrice );
 			stmt.execute( tableSystems );
 			stmt.execute( tableCommodityMapping );
-			systemLogger.info( "Table name: " + DB_TABLE_STATION_COMMODITY );
-			systemLogger.info( "Table name: " + DB_TABLE_SYSTEMS );
-			systemLogger.info( "Table name: " + DB_TABLE_COMMODITY_MAPPING );
+			stmt.execute( tableStations );
+			systemLogger.info( className, "Created table: " + DB_TABLE_STATION_COMMODITY );
+			systemLogger.info( className, "Created table: " + DB_TABLE_SYSTEMS );
+			systemLogger.info( className, "Created table: " + DB_TABLE_COMMODITY_MAPPING );
+			systemLogger.info( className, "Created table: " + DB_TABLE_STATIONS );
 
 		}
 		catch( SQLException e )
 		{
-			systemLogger.error( "SQL ERROR in createTable: " + e.getMessage() );
+			systemLogger.error( className, "SQLExecption: " + e.getMessage() );
 		}
 	}
 
@@ -127,32 +142,14 @@ public class DatabaseHandler
 			final long timeEnd = System.currentTimeMillis();
 			long time = ( timeEnd - timeStart ) / 1000;
 
-			systemLogger.info( "Successfully Droped Table: " + savePath + " Dropping last " + time
+			systemLogger.info( className, "Successfully Droped Table: " + savePath + " Dropping last " + time
 					+ " seconds." );
 
 		}
 		catch( SQLException e )
 		{
-			systemLogger.error( "SQL ERROR in dropTable: " + e.getMessage() );
+			systemLogger.error( className, "SQLException: " + e.getMessage() );
 		}
 
 	}
 }
-
-
-
-
-/*
-				+ "population real,\n"
-				+ "government_id integer,\n"
-				+ "government text,\n"
-				+ "allegiance_id integer,\n"
-				+ "allegiance text,\n"
-				+ "security_id integer,\n"
-				+ "security text,\n"
-				+ "primary_economy_id integer,\n"
-				+ "primary_economy text,\n"
-				+ "power text,\n"
-				+ "power_state text,\n"
-				+ "power_state_id integer,\n"
- */

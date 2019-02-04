@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/EliteDangerousPrices.iml" filepath="$PROJECT_DIR$/EliteDangerousPrices.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EliteDangerousRestClient.iml" filepath="$PROJECT_DIR$/EliteDangerousRestClient.iml" />
     </modules>
   </component>
 </project>
